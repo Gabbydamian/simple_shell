@@ -1,74 +1,61 @@
+#include <stdio.h>
 #include "shell.h"
-
 /**
-* interactive - returns true if shell is interactive mode
-* @info: struct address
-* Return: 1 if interactive mode, 0 otherwise
-*/
-int interactive(info_t *info)
+ * checkatoi - checks if a string can be turned into numbers
+ * Description:'A funciton'
+ * @s: the string to be checked
+ * Return: bool; true (1) if string can be converted else false(0)
+ */
+bool checkatoi(char *s)
 {
-	return (isatty(STDIN_FILENO) && info->readfd <= 2);
+	int i = 0;
+
+	while (s[i] != '\0')
+	{
+		if (!(s[i] >= '0' && s[i] <= '9'))
+			return (false);
+		i++;
+	}
+	return (true);
 }
 
 /**
-* is_delim - checks if character is a delimeter
-* @c: the char to check
-* @delim: the delimeter string
-* Return: 1 if true, 0 if false
-*/
-int is_delim(char c, char *delim)
-{
-	while (*delim)
-		if (*delim++ == c)
-			return (1);
-	return (0);
-}
-
-
-/**
-*_isalpha - checks for alphabetic character
-*@c: The character to input
-*Return: 1 if c is alphabetic, 0 otherwise
-*/
-int _isalpha(int c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	else
-		return (0);
-}
-
-
-/**
-*_atoi - converts a string to an integer
-*@s: the string to be converted
-*Return: 0 if no numbers in string, converted number otherwise
-*/
+ * _atoi - converts a string into an integer
+ * Description;'A function'
+ * @s: the string to be converted
+ * Return: the integer converted from the string
+ */
 int _atoi(char *s)
 {
-	int i, sign = 1, flag = 0, output;
-	unsigned int result = 0;
+	int a, b, c, d, digit1, digit2;
 
-	for (i = 0;  s[i] != '\0' && flag != 2; i++)
+	a = 0;
+	b = 0;
+	c = 0;
+	d = 0;
+	digit1 = 0;
+	digit2 = 0;
+
+	while (s[a] != '\0')
+		a++;
+	while (b < a && digit1 == 0)
 	{
-
-		if (s[i] == '-')
-			sign *= -1;
-
-		if (s[i] >= '0' && s[i] <= '9')
+		if (s[b] == '-')
+			++d;
+		if (s[b] >= '0' && s[b] <= '9')
 		{
-			flag = 1;
-			result *= 10;
-			result += (s[i] - '0');
+			digit2 = s[b] - '0';
+			if (d % 2)
+				digit2 = -digit2;
+			c = c * 10 + digit2;
+			digit1 = 1;
+			if (s[b + 1] < '0' || s[b + 1] > '9')
+				break;
+			digit1 = 0;
 		}
-		else if (flag == 1)
-			flag = 2;
+		b++;
 	}
-
-	if (sign == -1)
-		output = -result;
-	else
-		output = result;
-
-	return (output);
+	if (digit1 == 0)
+		return (0);
+	return (c);
 }
